@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Account Details</h1>
+    
+    <div class="account-info">
+        <h2>{{ account.__class__.__name__ }} Account</h2>
+        <p><strong>Account Number:</strong> {{ account.account_number }}</p>
+        <p><strong>Current Balance:</strong> ${{ "%.2f"|format(account.balance) }}</p>
+        
+        {% if isinstance(account, SavingsAccount) %}
+            <p><strong>Interest Rate:</strong> {{ (account._interest_rate * 100)|round(2) }}%</p>
+            <form action="{{ url_for('calculate_interest', account_number=account.account_number) }}" method="POST" style="margin-top: 20px;">
+                <button type="submit">Calculate Interest</button>
+            </form>
+        {% elif isinstance(account, CheckingAccount) %}
+            <p><strong>Overdraft Limit:</strong> ${{ "%.2f"|format(account._overdraft_limit) }}</p>
+        {% endif %}
+    </div>
+    
+    <a href="{{ url_for('index') }}" class="back-link">← Back to Accounts</a>
+{% endblock %}

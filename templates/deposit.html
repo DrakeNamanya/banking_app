@@ -1,0 +1,16 @@
+<!-- templates/deposit.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Deposit to Account #{{ account.account_number }}</h2>
+<form method="POST">
+    <label for="amount">Amount (UGX)</label>
+    <input type="number" name="amount" id="amount" required min="0.01" step="0.01">
+
+    <label for="note">Note (optional)</label>
+    <input type="text" name="note" id="note">
+
+    <button type="submit">Submit Deposit</button>
+</form>
+<a href="{{ url_for('index') }}" class="btn">← Back to Home</a>
+{% endblock %}

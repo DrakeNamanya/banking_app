@@ -1,0 +1,15 @@
+<!-- templates/withdraw.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Withdraw from Account #{{ account.account_number }}</h2>
+<p>Current Balance: UGX {{ "%.2f"|format(account.balance) }}</p>
+
+<form method="POST">
+    <label for="amount">Amount to Withdraw (UGX)</label>
+    <input type="number" name="amount" id="amount" required min="0.01" step="0.01">
+
+    <button type="submit">Withdraw</button>
+</form>
+<a href="{{ url_for('index') }}" class="btn">← Back to Home</a>
+{% endblock %}

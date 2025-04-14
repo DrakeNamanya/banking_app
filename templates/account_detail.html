@@ -1,0 +1,97 @@
+<!-- templates/account_detail.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="marquee">
+    <p>Thank you for trusting JINJA SDA SACCO</p>
+</div>
+
+<h2>Account Details</h2>
+<div>
+    <strong>Account #:</strong> {{ account.account_number }}<br>
+    <strong>Type:</strong> {{ account.account_type|title }}<br>
+    <strong>Balance:</strong> UGX {{ "%.2f"|format(account.balance) }}
+</div>
+
+<h3>Recent Transactions</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Note</th>
+            <th>Balance After</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in transactions %}
+        <tr>
+            <td>{{ t.date }}</td>
+            <td>{{ t.type }}</td>
+            <td class="{{ t.type }}">UGX {{ "%.2f"|format(t.amount) }}</td>
+            <td>{{ t.note }}</td>
+            <td>UGX {{ "%.2f"|format(t.balance) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Transaction Chart</h3>
+<canvas id="transactionChart" width="400" height="200"></canvas>
+<a href="{{ url_for('index') }}" class="btn">← Back to Home</a>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const chartData = JSON.parse(`{{ chart_data | safe }}`);
+    const ctx = document.getElementById('transactionChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: chartData.dates,
+            datasets: [
+                {
+                    label: 'Deposits',
+                    backgroundColor: '#28a745',
+                    data: chartData.deposits
+                },
+                {
+                    label: 'Withdrawals',
+                    backgroundColor: '#dc3545',
+                    data: chartData.withdrawals
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<style>
+.marquee {
+    width: 100%;
+    overflow: hidden;
+    background-color: #0066cc;
+    color: white;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    font-weight: bold;
+    position: relative;
+}
+.marquee p {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-left 10s linear infinite;
+    padding-left: 100%;
+}
+@keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+</style>
+{% endblock %}

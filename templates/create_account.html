@@ -1,0 +1,23 @@
+<!-- templates/create_account.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Create a New Account</h2>
+<form method="POST">
+    <label for="account_type">Account Type</label>
+    <select name="account_type" id="account_type" required>
+        <option value="">-- Select Type --</option>
+        <option value="saving">Saving Account</option>
+        <option value="checking">checking Account</option>
+            </select>
+
+    <label for="account_number">Account Number</label>
+    <input type="text" name="account_number" id="account_number" required>
+
+    <label for="initial_balance">Initial Balance (UGX)</label>
+    <input type="number" name="initial_balance" id="initial_balance" min="0" step="0.01">
+
+    <button type="submit">Create Account</button>
+</form>
+<a href="{{ url_for('index') }}" class="btn">← Back to Home</a>
+{% endblock %}
